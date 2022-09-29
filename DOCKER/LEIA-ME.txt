@@ -1,0 +1,29 @@
+INSTRUÇÕES PARA O DESENVOLVEDOR LOCAL A GERAR IMAGENS DOCKER:
+================================================================
+
+
+Comando usando para gerar a imagem docker com esse dockerfile:
+
+docker build -t xrodpim/firstdockerimage:v9 .
+
+Para ver a lista de imagens, usar docker images.
+
+Para executar a imagem fazer: docker run <ID da imagem escolhida>
+
+Para enviar essa imagem para o DockerHub, fazer:
+
+docker login -u "xrodpim" -p "0Rp.....@" docker.io
+docker push xrodpim/firstdockerimage:v9
+
+
+   (v9 é a tag de versão escolhida)
+
+
+Para acessar GitHub, usar login e senha.
+
+xrodpim 0Rp.....@
+
+
+
+
+Rodrigo Pimenta Carvalho 29/09/2022
