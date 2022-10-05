@@ -1,0 +1,13 @@
+A pasta node contem arquivos usados para a geração da imagem Node para container Docker.
+
+A pasta html contem um arquivo HTML usando como página inicial a ser mostrada pelo nginx, quando esse web server é acessado. Ele está escutando na porta 8080:80.  No navegador local, para teste, basta acessar http://localhost:8080. A porta 8080 da máquina local está mapeada para a porta 80 no container Nginx.
+
+O arquivo dockerfile_Nginx é usado pelo 'docker build...' para criar a imgem de container docker para Nginx.
+
+O arquivo docker_Node é usado pelo 'docker build...' para criar a imagem de container docker para Node.
+
+Com as imagens prontas, pode-se usar o arquivo docker-compose.yaml, para colocar os 2 containers em execução nessa máquina.
+
+-----------------
+
+Rodrigo Pimenta Carvalho 30/09/2022

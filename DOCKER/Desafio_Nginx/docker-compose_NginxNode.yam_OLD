@@ -1,0 +1,28 @@
+version: '3.3'
+
+services:
+
+ node:
+  build:
+   context: ./
+   dockerfile: dockerfile_Node
+  image: xrodpim/mynode:v1
+  container_name: node
+  networks:
+   - minhaRede
+ 
+ nginx:
+  build:
+   context: ./
+   dockerfile: dockerfile_Nginx
+  image: xrodpim/nginx_com_vim:v2
+  container_name: nginx
+  networks:
+   - minhaRede
+  ports:
+   - "8080:80"
+
+networks:
+ minhaRede:
+  driver: bridge
+
