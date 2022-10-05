@@ -12,7 +12,7 @@ Para executar a imagem fazer: docker run <ID da imagem escolhida>
 
 Para enviar essa imagem para o DockerHub, fazer:
 
-docker login -u "xrodpim" -p "0Rp.....@" docker.io
+docker login -u "xrodpim" -p "0R......@" docker.io
 docker push xrodpim/firstdockerimage:v9
 
 
@@ -21,7 +21,7 @@ docker push xrodpim/firstdockerimage:v9
 
 Para acessar GitHub, usar login e senha.
 
-xrodpim 0Rp.....@
+xrodpim 0R......@
 
 
 
