@@ -9,6 +9,7 @@ services:
   image: xrodpim/mynode:v1
   container_name: node
   entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh
+  command: npm start
   networks:
    - minhaRede
   volumes:
@@ -32,6 +33,17 @@ services:
    - MYSQL_ROOT_PASSWORD=root
   networks:
    - minhaRede
+
+ nginx:
+  build:
+   context: ./
+   dockerfile: dockerfile_Nginx
+  image: xrodpim/nginx_com_vim:v2
+  container_name: nginx
+  networks:
+   - minhaRede
+  ports:
+   - "8080:80"
 
 
 networks:      
