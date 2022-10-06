@@ -28,6 +28,7 @@ services:
   tty: true
   volumes:
    - ./mysql/:/var/lib/mysql
+   - ./database:/docker-entrypoint-initdb.d
   environment:
    - MYSQL_DATABASE=nodedb
    - MYSQL_ROOT_PASSWORD=root
@@ -44,6 +45,9 @@ services:
    - minhaRede
   ports:
    - "8080:80"
+  depends_on:
+   - db
+   - node
 
 
 networks:      
