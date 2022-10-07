@@ -31,4 +31,4 @@ Command 'docker images' shows available images.
 Command 'docker ps -a' shows available containers.
 Command 'docker-compose logs' shows the log of running the  docker-compose.yaml.
 
-After running the docker-compose.yaml file, the folder /mysql will has several files related to the MySQL database, locally. So that data will not by lost if the MySQL container is vanished. 
+After running the docker-compose.yaml file, the folder /mysql will have several files related to the MySQL database, locally. So that data will not by lost if the MySQL container is vanished. 
