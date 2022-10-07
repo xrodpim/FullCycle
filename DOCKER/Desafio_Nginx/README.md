@@ -4,6 +4,11 @@ To run this example as a FullCycle exercise solution you have to execute in this
 docker-compose up -d --build
 
 
+In case of error, try to execute:
+
+sudo rm -Rf mysql/ && docker stop nginx node db && docker-compose up -d --buil
+
+
 Folder 'node' contains files that must be used by the Node into a Docker container.
 
 Files dockerfile_* are used by the docker-compose. That is, when docker-compose.yaml is executed, it will execute these dockerfile_*. So, the docker-compose is responsible for creating the containers.
