@@ -12,8 +12,6 @@ services:
   command: npm start
   networks:
    - minhaRede
-  volumes:
-   - ./node:/usr/src/app
   tty: true
   ports:
    - "3000:3000"

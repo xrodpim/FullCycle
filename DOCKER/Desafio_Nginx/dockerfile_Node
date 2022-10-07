@@ -9,12 +9,15 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
     && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
-COPY ./node/package.json ./
-COPY ./node .
+COPY ./node/package.json /usr/src/app
+COPY ./node/index.js /usr/src/app
 
-RUN npm install
+RUN npm install --save express
 
+#COPY . /usr/src/app
 
 EXPOSE 3000
+
+#-------------------------------------------------------------------------------------------
 
 # descomente essa linha para deixar o comando seguinte rodar o node: CMD ["node", "index.js"]
