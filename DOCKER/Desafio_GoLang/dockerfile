@@ -1,4 +1,18 @@
+FROM golang:1.16-alpine AS BUILDER
+
+WORKDIR /app
+
+COPY go.mod ./
+
+COPY hello_code.go ./
+
+RUN go build -o /hello_go
+
+EXPOSE 8080
+
+#-----------------------------------------------
+
 FROM scratch
 WORKDIR /app
-COPY . .
-CMD ["/app/hello.go"]
+COPY --from=BUILDER /hello_go . 
+CMD ["/app/hello_go"]

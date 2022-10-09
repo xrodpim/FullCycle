@@ -1,8 +1,8 @@
 Para testar a imagem criada e enviada para o DockerHub, 
 tem-se que executar o seguinte comando numa máquina já com docker instalado:
 
-docker run xrodpim/firstdockerimage:v9
+docker run xrodpim/firstdockerimage:v10
 
 
-Rodrigo Pimenta Carvalho 29/09/2022
+Rodrigo Pimenta Carvalho 09/10/2022
 
