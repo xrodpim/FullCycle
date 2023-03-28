@@ -11,12 +11,14 @@ export default class OrderRepository {
         await OrderModel.create(
             {
                 id: entity.id,
-                customerId: entity.customerId,
+                //customerId: entity.customerId,
+                customer_Id: entity.customerId,
                 total: entity.total(),
                 items: entity.items.map((item) => ({
                     id: item.id,
                     name: item.name,
                     price: item.price,
+                    product_Id: item.productId, //Faltou essa instrução.
                     quantity: item.quantity,
                 })),
             },
