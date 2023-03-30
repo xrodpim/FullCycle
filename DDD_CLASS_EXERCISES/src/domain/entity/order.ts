@@ -1,9 +1,9 @@
 import OrderItem from "./order_item";
 export default class Order {
-  private _id: string;
-  private _customerId: string;
-  private _items: OrderItem[];
-  private _total: number;
+    private _id: string;
+    private _customerId: string;
+    private _items: OrderItem[];
+    private _total: number;
 
     constructor(id: string, customerId: string, items: OrderItem[]) {
         this._id = id;
@@ -23,6 +23,10 @@ export default class Order {
 
     get customerId(): string {
         return this._customerId;
+    }
+
+    set customerId(customerId: string) {
+        this._customerId = customerId;
     }
 
     validade(): boolean {

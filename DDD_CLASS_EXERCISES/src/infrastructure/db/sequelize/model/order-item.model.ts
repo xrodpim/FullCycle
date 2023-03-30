@@ -43,8 +43,7 @@ export default class OrderItemModel extends Model {
     declare order_id: string;
 
     @BelongsTo(() => OrderModel)
-    declare order: ProductModel;   //TODO: change to OrderModel ?????
-    //declare order: OrderModel;
+    declare order: ProductModel;
 
 
     @Column({ allowNull: false })
