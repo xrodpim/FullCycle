@@ -8,83 +8,85 @@ import OrderItem from "../entity/order_item";
 
 export default class OrderRepository implements OrderRepositoryInterface {
 
-
+    /**********************************UPDATE NOVO*START*********************************************************/
     async update(entity: Order): Promise<void> {
 
-        let orderModel;
-        let orderItems: OrderItemModel[] = []; // inicializa o array itens
-        const id: string = entity.id; // pega o id da entidade
+        logging: console.log; // log SQL statement to console
 
+        const sequelize = OrderModel.sequelize;
         try {
-
-            orderModel = await OrderModel.findOne({
-
-                where: {
-                    id,
-                },
-                include: [OrderItemModel],
-                rejectOnEmpty: true,
-            });
-
-
-            if (orderModel) {
-                // Atualiza as informações da ordem com as informações do objeto `entity`
-                orderModel.customer_Id = entity.customerId;
-                orderModel.total = entity.total();
-                entity.items.map((item) => {
-                    // Cria um novo objeto OrderItemModel para cada item da ordem
-                    orderItems.push(
-                        new OrderItemModel({
-                            id: item.id,
-                            name: item.name,
-                            price: item.price,
-                            product_Id: item.productId,
-                            quantity: item.quantity,
-                        })
-                    );
+            await sequelize.transaction(async (t) => {
+                await OrderItemModel.destroy({
+                    where: { order_id: entity.id },
+                    transaction: t,
                 });
-
-                orderModel.items = orderItems; // Atualiza os itens da ordem
-                await orderModel.save(); // Salva as informações atualizadas no banco de dados
-            } else {
-                throw new Error("Order not found");
-            }
-
-        } catch (error) {
-            throw new Error("Order not found");
-        }
-    }
-
-    /*
-        async update(entity: Order): Promise<void> {
-            try {
-                const orderModel = await OrderModel.findOne({ where: { id: entity.id } });
-    
-                if (!orderModel) {
-                    throw new Error('Order not found');
-                }
-    
-                orderModel.customer_Id = entity.customerId;
-                orderModel.total = entity.total();
-    
-                const orderItems = entity.items.map((item) => ({
+                const items = entity.items.map((item) => ({
                     id: item.id,
                     name: item.name,
                     price: item.price,
-                    product_Id: item.productId,
+                    product_id: item.productId,
                     quantity: item.quantity,
+                    order_id: entity.id,
                 }));
-    
-                await OrderItemModel.destroy({ where: { orderId: entity.id } });
-                await OrderItemModel.bulkCreate(orderItems.map((item) => ({ ...item, orderId: entity.id })));
-    
-                await orderModel.save();
-            } catch (error) {
-                throw new Error(`Error updating order.`);
-            }
+                await OrderItemModel.bulkCreate(items, { transaction: t });
+                await OrderModel.update(
+                    { total: entity.total() },
+                    { where: { id: entity.id }, transaction: t }
+                );
+            });
+        } catch (error) {
+            throw new Error(`Error updating order.`);
         }
-    
-    */
+    }
+    /*********************************UPDATE NOVO*END********************************************************* */
+
+
+    /**********************************UPDATE ANTIGO*START********************************************************* 
+    async update(entity: Order): Promise<void> {
+        try {
+            const orderModel = await OrderModel.findOne({ where: { id: entity.id } });
+
+            if (!orderModel) {
+                throw new Error('Order not found');
+            }
+
+            orderModel.customer_Id = entity.customerId;
+            orderModel.total = entity.total();
+
+            const orderItems = entity.items.map((item) => ({
+                id: item.id,
+                name: item.name,
+                price: item.price,
+                product_Id: item.productId,
+                quantity: item.quantity,
+            }));
+
+            await OrderItemModel.destroy({ where: { orderId: entity.id } });
+            await OrderItemModel.bulkCreate(orderItems.map((item) => ({ ...item, orderId: entity.id })));
+
+            await OrderModel.update(
+                { total: entity.total() },
+                { where: { id: entity.id } }
+            );
+        } catch (error) {
+            throw new Error(`Error updating order.`);
+        }
+    }
+    *********************************UPDATE ANTIGO*END********************************************************* */
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**********************************FIND*START********************************************************* */
     async find(id: string): Promise<Order> {
 
         let orderModel;
@@ -109,7 +111,18 @@ export default class OrderRepository implements OrderRepositoryInterface {
         const order = new Order(id, orderModel.customer_Id, itens);
         return order;
     }
+    /**********************************FIND*END********************************************************* */
 
+
+
+
+
+
+
+
+
+
+    /**********************************FIND ALL*START********************************************************* */
     async findAll(): Promise<Order[]> {
         try {
             const orders = await OrderModel.findAll(); // busca todas as ordens
@@ -124,7 +137,14 @@ export default class OrderRepository implements OrderRepositoryInterface {
             throw new Error("Error retrieving orders");
         }
     }
+    /**********************************FIND ALL*END********************************************************* */
 
+
+
+
+
+
+    /**********************************CREATE*START********************************************************* */
     async create(entity: Order): Promise<void> {
 
         await OrderModel.create(
@@ -145,4 +165,10 @@ export default class OrderRepository implements OrderRepositoryInterface {
             }
         );
     }
+    /**********************************CREATE*END********************************************************* */
+
+
+
+
+
 }
