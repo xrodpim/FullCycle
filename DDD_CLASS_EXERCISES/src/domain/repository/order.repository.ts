@@ -24,7 +24,7 @@ export default class OrderRepository implements OrderRepositoryInterface {
                     id: item.id,
                     name: item.name,
                     price: item.price,
-                    product_id: item.productId,
+                    product_Id: item.productId,
                     quantity: item.quantity,
                     order_id: entity.id,
                 }));
@@ -35,54 +35,12 @@ export default class OrderRepository implements OrderRepositoryInterface {
                 );
             });
         } catch (error) {
+            console.log(error);
             throw new Error(`Error updating order.`);
+
         }
     }
     /*********************************UPDATE NOVO*END********************************************************* */
-
-
-    /**********************************UPDATE ANTIGO*START********************************************************* 
-    async update(entity: Order): Promise<void> {
-        try {
-            const orderModel = await OrderModel.findOne({ where: { id: entity.id } });
-
-            if (!orderModel) {
-                throw new Error('Order not found');
-            }
-
-            orderModel.customer_Id = entity.customerId;
-            orderModel.total = entity.total();
-
-            const orderItems = entity.items.map((item) => ({
-                id: item.id,
-                name: item.name,
-                price: item.price,
-                product_Id: item.productId,
-                quantity: item.quantity,
-            }));
-
-            await OrderItemModel.destroy({ where: { orderId: entity.id } });
-            await OrderItemModel.bulkCreate(orderItems.map((item) => ({ ...item, orderId: entity.id })));
-
-            await OrderModel.update(
-                { total: entity.total() },
-                { where: { id: entity.id } }
-            );
-        } catch (error) {
-            throw new Error(`Error updating order.`);
-        }
-    }
-    *********************************UPDATE ANTIGO*END********************************************************* */
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -115,30 +73,31 @@ export default class OrderRepository implements OrderRepositoryInterface {
 
 
 
-
-
-
-
-
-
-
     /**********************************FIND ALL*START********************************************************* */
+
     async findAll(): Promise<Order[]> {
         try {
-            const orders = await OrderModel.findAll(); // busca todas as ordens
-            return orders.map((order) => {
-                const itens: OrderItem[] = []; // inicializa o array itens
-                order.items.forEach((item) => {
-                    itens.push(new OrderItem(item.id, item.name, item.price, item.product_Id, item.quantity)); // adiciona o objeto criado ao array itens
+            const orders = await OrderModel.findAll({
+                include: [OrderItemModel],
+            });
+
+            return orders.map((orderModel) => {
+                const items: OrderItem[] = [];
+
+                orderModel.items.forEach((item) => {
+                    items.push(
+                        new OrderItem(item.id, item.name, item.price, item.product_Id, item.quantity)
+                    );
                 });
-                return new Order(order.id, order.customer_Id, itens); // retorna uma nova instância de Order com os dados mapeados
+
+                return new Order(orderModel.id, orderModel.customer_Id, items);
             });
         } catch (error) {
+            console.log(error);
             throw new Error("Error retrieving orders");
         }
     }
     /**********************************FIND ALL*END********************************************************* */
-
 
 
 
@@ -166,8 +125,6 @@ export default class OrderRepository implements OrderRepositoryInterface {
         );
     }
     /**********************************CREATE*END********************************************************* */
-
-
 
 
 
