@@ -3,8 +3,6 @@ import {
     Model,
     Column,
     PrimaryKey
-
-
 } from 'sequelize-typescript';
 
 
